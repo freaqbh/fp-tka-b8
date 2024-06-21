@@ -18,3 +18,13 @@ Kemudian juga disediakan sebuah Frontend sederhana menggunakan index.html dan st
 
 Kemudian anda diminta untuk mendesain arsitektur cloud yang sesuai dengan kebutuhan aplikasi tersebut. Apabila dana maksimal yang diberikan adalah 1 juta rupiah per bulan (65 US$) konfigurasi cloud terbaik seperti apa yang bisa dibuat?
 
+# Rancangan Arsitektur dan Tabel spesifikasi harga
+Kami Melakukan Ujicoba terlebih dahulu ke sebuah virtual machine agar dapat memaksimalkan kemampuannya dan mendapatkan hasil yang paling bagus kami menggunakan Flask sebagai backend Mongodb sebagai databasenya dan HAProxy sebagai load balancernya
+
+![Screenshot from 2024-06-21 11-17-48](https://github.com/freaqbh/fp-tka-b8/assets/123524655/a4b59052-30b8-4807-b68a-8720d083b70e)
+
+berikut merupakan spesifikasi tabel harga
+
+![Screenshot from 2024-06-21 11-29-50](https://github.com/freaqbh/fp-tka-b8/assets/123524655/28f71944-7375-4610-b2cb-39432676f2ea)
+
+
