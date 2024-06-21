@@ -1,4 +1,4 @@
-![image](https://github.com/freaqbh/fp-tka-b8/assets/123524655/5d4b2a73-0d1c-468f-a55c-bb38a65f0467)# Final Project Kelompok B8
+
 
  ## ***KELOMPOK B8***
   | Nama      | NRP         |
