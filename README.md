@@ -163,3 +163,9 @@ pada pengujian kali ini kami mendapatkan rps tertinggi 27.7 dan rata-rata rps 26
 ![Screenshot from 2024-06-21 13-28-21](https://github.com/freaqbh/fp-tka-b8/assets/123524655/6077de92-0b8c-4838-8b21-7237f7e273cb)
 
 # Kesimpulan dan saran
+
+kesimpulan yang saya dapatkan adalah load balancing memang dapat mengoptimasikan kemampuan server dalam meningkatkan kemampuan server untuk menampung user, dan untuk setiap pengujian melakukan restart mongodb di vm nya agar dapat menghasilkan hasil optimal ketika dilakukan load testing. 
+
+
+# Revisi menggunakan satu VM
+
