@@ -168,4 +168,79 @@ kesimpulan yang saya dapatkan adalah load balancing memang dapat mengoptimasikan
 
 
 # Revisi menggunakan satu VM
+Kami memutuskan untuk menguji menggunakan satu virtual machine saja dan membandingkan apakah menggunakan satu virtual machine lebih baik dari pada menggunakan 3 virtual machine, yang mana satu virtual machine ini tidak menggunakan loadbalancing hanya menggunakan backend, frontend dan mongodb
 
+# Rancangan Arsitektur dan Tabel spesifikasi harga
+berikut adalah rancangan dari ujicoba menggunakan satu virtual machine
+![Screenshot from 2024-06-29 20-03-18](https://github.com/freaqbh/fp-tka-b8/assets/123524655/16712229-060c-4339-a9cf-74abf5ef628b)
+dan berikut adalah tabel harga menggunakan satu virtual machine yang notabene lebih mahal
+![Screenshot from 2024-06-29 20-09-05](https://github.com/freaqbh/fp-tka-b8/assets/123524655/3488433f-bdca-46b0-b069-89967af152df)
+
+# Langkah Implementasi Aplikasi
+1. Membuat Config Vagrantfile
+   berikut merupakan konfigurasi dari vagrant file
+```
+Vagrant.configure("2") do |config|
+  config.vm.box = "ubuntu/bionic64"  # Ubuntu 18.04 LTS
+
+  config.vm.network "forwarded_port", guest: 5000, host: 5000
+  config.vm.network "forwarded_port", guest: 8000, host: 8000
+
+  config.vm.provider "virtualbox" do |vb|
+    vb.memory = "2048"          # Set RAM to 2 GB
+    vb.cpus = 2                 # Set CPU to 2 vCPUs
+  end
+
+  config.vm.provision "shell", inline: <<-SHELL
+    apt-get update
+    apt-get install -y python3-pip mongodb
+    systemctl start mongodb
+    systemctl enable mongodb
+    pip3 install -r /vagrant/backend/requirements.txt
+  SHELL
+
+  config.vm.synced_folder "./backend", "/home/vagrant/backend"
+  config.vm.synced_folder "./frontend", "/home/vagrant/frontend"
+end
+```
+ setelah membuat Vagrantfile lakukan perintah "vagrant up"
+![Screenshot from 2024-06-29 18-09-36](https://github.com/freaqbh/fp-tka-b8/assets/123524655/8af25b8d-6aa3-42b9-a37c-17c6662a87a3)
+
+2. Masuk ke virtual mesinnya dengan perintah "vagran ssh"
+![Screenshot from 2024-06-29 18-22-03](https://github.com/freaqbh/fp-tka-b8/assets/123524655/3f061a72-b8b1-49ce-871d-9e0d17c93b58)
+
+3. jalankan sentiment-analysis.py di VM
+![Screenshot from 2024-06-29 18-44-42](https://github.com/freaqbh/fp-tka-b8/assets/123524655/980481e0-97ae-4e08-b606-97fa592b437e)
+
+4. jalankan perintah "python3 -m http.server 8000" di folder frontendnya
+![Screenshot from 2024-06-29 18-44-35](https://github.com/freaqbh/fp-tka-b8/assets/123524655/fddf8787-ddb3-43cc-851e-4271e72a5d4f)
+dan lakukan test terhadap aplikasi di browser "http://localhost:8000"
+![Screenshot from 2024-06-29 18-43-58](https://github.com/freaqbh/fp-tka-b8/assets/123524655/7ae31987-940e-4e15-a862-d39580bf7749)
+
+# Hasil pengujian Loadtesting menggunakan Locust
+1. RPS Maksimum (load testing 60s)
+![100 15](https://github.com/freaqbh/fp-tka-b8/assets/123524655/3dcfe356-1bc7-44a9-a689-0c8841bc5726)
+![100 15 c](https://github.com/freaqbh/fp-tka-b8/assets/123524655/a7adf435-0bc3-4b2e-b83b-e2f2fa18e4e9)
+kami melakukan uji coba dengan 100 number of use dan sebanyak 15 Ramps up dapat dilihat di table tersebut kami mendapatkan 17 rps. Pada testing ini tidak ditemukan failure
+
+2. Peak Concurrency Maksimum (spawn rate 50, load testing 60 detik)
+![50 20](https://github.com/freaqbh/fp-tka-b8/assets/123524655/c0922b01-4846-45a0-8b14-748e7a276707)
+![50 20 c](https://github.com/freaqbh/fp-tka-b8/assets/123524655/a13ad09a-f05d-4e99-832b-4688d2bb395c)
+disini kami melakukan dengan 50 number of use dan sebanyak 20 ramps up
+
+3. Peak Concurrency Maksimum (spawn rate 100, load testing 60 detik)
+![100 15](https://github.com/freaqbh/fp-tka-b8/assets/123524655/24126797-5b46-4ec1-9fa0-83adb5f07d70)
+![100 15 c](https://github.com/freaqbh/fp-tka-b8/assets/123524655/87f440a4-b40f-4b51-a011-20048bcf2d3c)
+disini kami melakukan dengan 100 number of use dan sebanyak 15 ramps up
+
+4. Peak Concurrency Maksimum (spawn rate 200, load testing 60 detik)
+![200 10](https://github.com/freaqbh/fp-tka-b8/assets/123524655/ea47d6d2-c448-4619-8860-3b8f84403798)
+![200 10 c](https://github.com/freaqbh/fp-tka-b8/assets/123524655/884a2461-40e1-46eb-9ed4-a2e81f394c98)
+disini kami melakukan dengan 200 number of use dan sebanyak 10 ramps up
+
+5. Peak Concurrency Maksimum (spawn rate 500, load testing 60 detik)
+![500 5](https://github.com/freaqbh/fp-tka-b8/assets/123524655/88e2aeaf-a254-4218-9946-2e7eaf2d1ca1)
+![500 5 c](https://github.com/freaqbh/fp-tka-b8/assets/123524655/f57776da-567a-4217-af2f-80633a674c7a)
+disini kami melakukan dengan 500 number of use dan sebanyak 5 ramps up
+
+# Kesimpulan dan saran
