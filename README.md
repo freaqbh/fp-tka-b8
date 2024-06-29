@@ -244,3 +244,10 @@ disini kami melakukan dengan 200 number of use dan sebanyak 10 ramps up
 disini kami melakukan dengan 500 number of use dan sebanyak 5 ramps up
 
 # Kesimpulan dan saran
+kesimpulan kemampuan menggunakan 3 virtual machine lebih unggul dari pada menggunakan 1 virtual machine bisa dilihat dari setiap ujicoba loadtesting di semua kasus 3 virtual machine lebih unggul hal ini dikarenakan adanya loadbalancing yang dapat mengoptimalkan kemampuan server tersebut.
+
+# Video Penjelasan
+
+
+https://github.com/freaqbh/fp-tka-b8/assets/123524655/36be7589-be88-4b41-9cfa-0896770230d0
+
